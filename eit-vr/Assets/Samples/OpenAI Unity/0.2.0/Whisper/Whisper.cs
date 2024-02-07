@@ -1,6 +1,7 @@
 ﻿using OpenAI;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace Samples.Whisper
 {
@@ -8,9 +9,10 @@ namespace Samples.Whisper
     {
         [SerializeField] private Button recordButton;
         [SerializeField] private Image progressBar;
-        [SerializeField] private Text message;
+        [SerializeField] private ScrollRect scroll;
         [SerializeField] private Dropdown dropdown;
-        
+        [SerializeField] private string systemMessage;
+
         private readonly string fileName = "output.wav";
         private readonly int duration = 5;
         
@@ -18,6 +20,11 @@ namespace Samples.Whisper
         private bool isRecording;
         private float time;
         private OpenAIApi openai = new OpenAIApi("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");
+
+        [SerializeField] private RectTransform sent;
+        [SerializeField] private RectTransform received;
+        private float height;
+        private List<ChatMessage> messages = new List<ChatMessage>();
 
         private void Start()
         {
@@ -33,7 +40,12 @@ namespace Samples.Whisper
             
             var index = PlayerPrefs.GetInt("user-mic-device-index");
             dropdown.SetValueWithoutNotify(index);
-            #endif
+#endif
+
+            messages.Add(new ChatMessage() { 
+                Role = "system",
+                Content = systemMessage
+            });
         }
 
         private void ChangeMicrophone(int index)
@@ -54,9 +66,7 @@ namespace Samples.Whisper
         }
 
         private async void EndRecording()
-        {
-            message.text = "Transcripting...";
-            
+        {            
             #if !UNITY_WEBGL
             Microphone.End(null);
             #endif
@@ -73,7 +83,57 @@ namespace Samples.Whisper
             var res = await openai.CreateAudioTranscription(req);
 
             progressBar.fillAmount = 0;
-            message.text = res.Text;
+            SendReply(res.Text);
+            recordButton.enabled = true;
+        }
+
+        private void AppendMessage(ChatMessage message)
+        {
+            scroll.content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
+
+            var item = Instantiate(message.Role == "user" ? sent : received, scroll.content);
+            item.GetChild(0).GetChild(0).GetComponent<Text>().text = message.Content;
+            item.anchoredPosition = new Vector2(0, -height);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(item);
+            height += item.sizeDelta.y;
+            scroll.content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height);
+            scroll.verticalNormalizedPosition = 0;
+        }
+
+        private async void SendReply(string txt)
+        {
+            var newMessage = new ChatMessage()
+            {
+                Role = "user",
+                Content = txt
+            };
+
+            AppendMessage(newMessage);
+
+            messages.Add(newMessage);
+
+            recordButton.enabled = false;
+
+            // Complete the instruction
+            var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
+            {
+                Model = "gpt-3.5-turbo-0613",
+                Messages = messages
+            });
+
+            if (completionResponse.Choices != null && completionResponse.Choices.Count > 0)
+            {
+                var message = completionResponse.Choices[0].Message;
+                message.Content = message.Content.Trim();
+
+                messages.Add(message);
+                AppendMessage(message);
+            }
+            else
+            {
+                Debug.LogWarning("No text was generated from this prompt.");
+            }
+
             recordButton.enabled = true;
         }
 
