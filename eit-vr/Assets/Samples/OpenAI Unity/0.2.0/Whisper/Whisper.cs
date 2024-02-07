@@ -26,6 +26,8 @@ namespace Samples.Whisper
         private float height;
         private List<ChatMessage> messages = new List<ChatMessage>();
 
+        [SerializeField] private TTSManager ttsManager;
+
         private void Start()
         {
             #if UNITY_WEBGL && !UNITY_EDITOR
@@ -128,6 +130,9 @@ namespace Samples.Whisper
 
                 messages.Add(message);
                 AppendMessage(message);
+
+                // TTS
+                if (ttsManager) ttsManager.SynthesizeAndPlay(message.Content);
             }
             else
             {
