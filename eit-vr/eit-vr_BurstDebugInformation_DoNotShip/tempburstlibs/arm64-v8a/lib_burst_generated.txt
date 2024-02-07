@@ -18,6 +18,7 @@ Library: C:\Users\Sondr\Desktop\language-learning-vr\eit-vr\Temp\BurstOutput\tem
 --assembly-defines=System.Core;
 --assembly-defines=System.Data;
 --assembly-defines=System;
+--assembly-defines=System.Net.Http;
 --assembly-defines=System.Numerics;
 --assembly-defines=System.Runtime.Serialization;
 --assembly-defines=System.Xml;
@@ -72,6 +73,7 @@ Library: C:\Users\Sondr\Desktop\language-learning-vr\eit-vr\Temp\BurstOutput\tem
 --assembly-defines=System.Core;
 --assembly-defines=System.Data;
 --assembly-defines=System;
+--assembly-defines=System.Net.Http;
 --assembly-defines=System.Numerics;
 --assembly-defines=System.Runtime.Serialization;
 --assembly-defines=System.Xml;

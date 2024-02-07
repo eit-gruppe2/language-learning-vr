@@ -8,7 +8,6 @@ namespace Samples.Whisper
     public class Whisper : MonoBehaviour
     {
         [SerializeField] private Button recordButton;
-        [SerializeField] private Image progressBar;
         [SerializeField] private ScrollRect scroll;
         [SerializeField] private Dropdown dropdown;
         [SerializeField] private string systemMessage;
@@ -57,8 +56,15 @@ namespace Samples.Whisper
         
         private void StartRecording()
         {
+            if (isRecording)
+            {
+                EndRecording();
+                return;
+            }
+
             isRecording = true;
-            recordButton.enabled = false;
+            // change text of button
+            recordButton.GetComponentInChildren<Text>().text = "Stop recording";
 
             var index = PlayerPrefs.GetInt("user-mic-device-index");
             
@@ -69,6 +75,9 @@ namespace Samples.Whisper
 
         private async void EndRecording()
         {            
+            isRecording = false;
+            recordButton.GetComponentInChildren<Text>().text = "Record Audio";
+
             #if !UNITY_WEBGL
             Microphone.End(null);
             #endif
@@ -84,7 +93,6 @@ namespace Samples.Whisper
             };
             var res = await openai.CreateAudioTranscription(req);
 
-            progressBar.fillAmount = 0;
             SendReply(res.Text);
             recordButton.enabled = true;
         }
@@ -142,20 +150,5 @@ namespace Samples.Whisper
             recordButton.enabled = true;
         }
 
-        private void Update()
-        {
-            if (isRecording)
-            {
-                time += Time.deltaTime;
-                progressBar.fillAmount = time / duration;
-                
-                if (time >= duration)
-                {
-                    time = 0;
-                    isRecording = false;
-                    EndRecording();
-                }
-            }
-        }
     }
 }
