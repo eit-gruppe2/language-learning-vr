@@ -26,6 +26,7 @@ public class TTSManager : MonoBehaviour
         if (audioData != null)
         {
             Debug.Log("Playing audio.");
+            this.lewis.startTalkingAnimation();
             audioPlayer.ProcessAudioBytes(audioData);
         }
         else
@@ -39,7 +40,6 @@ public class TTSManager : MonoBehaviour
         this.model = model;
         this.voice = voice;
         this.speed = speed;
-        this.lewis.startTalkingAnimation();
         SynthesizeAndPlay(text);
     }
 
