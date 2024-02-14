@@ -12,22 +12,20 @@ public class lewisAnimationStateController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    public void startTalkingAnimation()
+    {
+        animator.SetBool("isTalking", true);
+    }
+
+    public void stopTalkingAnimation()
+    {
+        animator.SetBool("isTalking", false);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("t"))
-        {
-            animator.SetBool("isTalking", true);
-
-        }
-        if (!Input.GetKey("t"))
-        {
-            animator.SetBool("isTalking", false);
-
-        }
+    
     }
-
-
-
 
 }
