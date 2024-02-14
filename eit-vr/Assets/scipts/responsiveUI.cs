@@ -30,7 +30,7 @@ public class responsiveUI : MonoBehaviour
 
     private void Update(){
       if(Input.GetKeyDown("space")){
-        fillStars(4);
+        fillStars(stars);
         fillFeedBackText(feedback);
       }
       
