@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class TTSManager : MonoBehaviour
@@ -35,7 +36,7 @@ public class TTSManager : MonoBehaviour
         }
     }
 
-    public async void SynthesizeAndPlay(string text, TTSModel model, TTSVoice voice, float speed)
+    public void SynthesizeAndPlay(string text, TTSModel model, TTSVoice voice, float speed)
     {
         this.model = model;
         this.voice = voice;

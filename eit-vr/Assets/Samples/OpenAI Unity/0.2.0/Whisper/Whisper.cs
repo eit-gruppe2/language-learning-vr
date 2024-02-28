@@ -26,6 +26,7 @@ namespace Samples.Whisper
         private List<ChatMessage> messages = new List<ChatMessage>();
 
         [SerializeField] private TTSManager ttsManager;
+        [SerializeField] private ObjectivesNFeedback objectivesNFeedback;
 
         private void Start()
         {
@@ -148,6 +149,7 @@ namespace Samples.Whisper
             }
 
             recordButton.enabled = true;
+            objectivesNFeedback.CheckForCompletedObjectives(messages);
         }
 
     }

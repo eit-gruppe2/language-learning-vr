@@ -11,6 +11,21 @@ public class responsiveUI : MonoBehaviour
     public TextMeshProUGUI feedbacktext;
     public GameObject StarLine;
 
+    public void ReceiveUpdatedObjectives(List<Objective> objectives)
+    {
+        // We only want to show the previous and current objective, no past objectives
+        List<Objective> objectivesToShow = new List<Objective>(objectives);
+        int lastToShow = objectivesToShow.FindIndex((obj) => !obj.IsCompleted);
+        objectivesToShow.RemoveRange(lastToShow + 1, objectivesToShow.Count - lastToShow - 1);
+        
+        // TODO: show objectivesToShow to the user
+    }
+
+    public void ReceiveFeedback(Feedback feedback)
+    {
+        // TODO: show the feedback to the user
+    }
+
     private void fillStars(int stars){
       int i = 0;
       foreach (Transform star in StarLine.transform) {
