@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
 
 namespace Samples.Whisper
 {
@@ -48,6 +49,7 @@ namespace Samples.Whisper
                 Role = "system",
                 Content = systemMessage
             });
+            Console.Write(systemMessage);
         }
 
         private void ChangeMicrophone(int index)
