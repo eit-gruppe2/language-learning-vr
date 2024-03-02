@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class responsiveUI : MonoBehaviour
 {
     public int stars;
     public string feedback;
     public TextMeshProUGUI feedbacktext;
-    public GameObject StarLine;
+    public GameObject grammarStars;
+    public GameObject pronounciationStars;
+    public GameObject ExpressivenessStars;
 
     public void ReceiveUpdatedObjectives(List<Objective> objectives)
     {
@@ -24,14 +27,17 @@ public class responsiveUI : MonoBehaviour
     public void ReceiveFeedback(Feedback feedback)
     {
         // TODO: show the feedback to the user
+        fillStars(feedback.grammar, grammarStars);
+        fillStars(feedback.pronunciation, pronounciationStars);
+        fillStars(feedback.expressiveness, ExpressivenessStars);
+        fillFeedBackText(feedback.generalFeedback);   
     }
 
-    private void fillStars(int stars){
+    private void fillStars(int stars, GameObject starline){
       int i = 0;
-      foreach (Transform star in StarLine.transform) {
+      foreach (Transform star in starline.transform) {
         if (i<stars) {
           star.gameObject.GetComponent<Image>().color = new Color32(255, 210, 90, 255);
-          Debug.Log("Star changed color");
           i++;
         } else {
           star.gameObject.GetComponent<Image>().color = new Color32(179, 143, 47, 255);
@@ -41,13 +47,5 @@ public class responsiveUI : MonoBehaviour
     
     private void fillFeedBackText(string feedback){
       feedbacktext.text = feedback;
-    }
-
-    private void Update(){
-      if(Input.GetKeyDown("space")){
-        fillStars(stars);
-        fillFeedBackText(feedback);
-      }
-      
     }
 }   
