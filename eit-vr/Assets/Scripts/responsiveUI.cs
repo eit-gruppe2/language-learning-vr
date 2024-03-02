@@ -14,6 +14,11 @@ public class responsiveUI : MonoBehaviour
     public GameObject pronounciationStars;
     public GameObject ExpressivenessStars;
 
+    public TextMeshProUGUI currentObjective;
+
+    public void InitObjectives(Objective objective) {
+      currentObjective.text = objective.TaskDescription;
+    } 
     public void ReceiveUpdatedObjectives(List<Objective> objectives)
     {
         // We only want to show the previous and current objective, no past objectives
@@ -22,7 +27,10 @@ public class responsiveUI : MonoBehaviour
         objectivesToShow.RemoveRange(lastToShow + 1, objectivesToShow.Count - lastToShow - 1);
         
         // TODO: show objectivesToShow to the user
+        currentObjective.text = objectivesToShow[lastToShow].TaskDescription;
+        Debug.Log("current objective: "+objectivesToShow[lastToShow].TaskDescription);
     }
+
 
     public void ReceiveFeedback(Feedback feedback)
     {

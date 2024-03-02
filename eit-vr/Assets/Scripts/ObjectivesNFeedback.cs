@@ -16,6 +16,10 @@ public class ObjectivesNFeedback : MonoBehaviour
     private int currentObjective = 0;
     private OpenAIApi openai = new OpenAIApi("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");
 
+    public void Start(){
+       uiScript.InitObjectives(objectives[0]);
+    }
+    
     public async void CheckForCompletedObjectives(List<ChatMessage> chats)
     {
         Debug.Log("Checking for completed objectives");
@@ -91,11 +95,6 @@ textFeedback: Overall, the conversation was somewhat understandable despite some
             o += objective.ToString() + "\n";
         }
         return o;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
     }
 
     // Update is called once per frame
