@@ -37,32 +37,54 @@ public class responsiveUI : MonoBehaviour
         
     }
 
-    private void VisualizeObjectives(Objective objective, int index) {
-      // Instantiate an instance of a visual objective
-      GameObject instance = Instantiate(ObjectiveStruct);
-      instance.transform.SetParent(transform);
-      TextMeshProUGUI text = instance.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-      text.text = objective.TaskDescription;
+    private void VisualizeObjectives(Objective objective, int index)
+{
+    // Instantiate an instance of a visual objective
+    GameObject instance = Instantiate(ObjectiveStruct);
+    instance.transform.SetParent(transform);
 
-      // Move the visual objective further down
-      float POSITION_MULTIPLIER = 0.2f;
-      float STARTING_POSITION = 3.1f;
-      instance.transform.position = new Vector3(instance.transform.position.x,STARTING_POSITION - index * POSITION_MULTIPLIER, instance.transform.position.z);
-      Debug.Log("position: " + instance.transform.position);
+    // Set the rotation of the instance to match the parent's rotation
+    instance.transform.rotation = transform.rotation;
 
-      // Visualize current objective
-      foreach(Transform child in transform) {
-        if(child.name == "ObjectiveStruct(Clone)") {
-          child.GetComponent<Image>().color = new Color32(179, 143, 47, 255);
-          Debug.Log("child found and color changed");
+    TextMeshProUGUI text = instance.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+    text.text = objective.TaskDescription;
+
+    // Move the visual objective further down
+    float POSITION_MULTIPLIER = 0.2f;
+    float STARTING_POSITION = 3.1f;
+    instance.transform.position = new Vector3(instance.transform.position.x, STARTING_POSITION - index * POSITION_MULTIPLIER, instance.transform.position.z);
+    Debug.Log("position: " + instance.transform.position);
+
+    // Find the corresponding ObjectiveHolder
+    string holderName = "ObjectiveHolder(" + index + ")";
+    Transform objectiveHolder = transform.Find("ObjectiveInfo/Background/Positions/" + holderName);
+
+    if (objectiveHolder != null)
+    {
+        // Set the position of the instantiated object within the ObjectiveHolder
+        instance.transform.SetParent(objectiveHolder);
+        instance.transform.localPosition = Vector3.zero;
+
+        // Visualize current objective
+        foreach (Transform child in transform)
+        {
+            if (child.name == "ObjectiveStruct(Clone)")
+            {
+                child.GetComponent<Image>().color = new Color32(179, 143, 47, 255);
+                Debug.Log("child found and color changed");
+            }
         }
-      }
 
-      int lastChildIndex = transform.childCount - 1;
-      GameObject lastChildObject = transform.GetChild(lastChildIndex).gameObject;
-      lastChildObject.GetComponent<Image>().color = new Color32(255, 210, 90, 255);
-      
+        int lastChildIndex = transform.childCount - 1;
+        GameObject lastChildObject = transform.GetChild(lastChildIndex).gameObject;
+        lastChildObject.GetComponent<Image>().color = new Color32(255, 210, 90, 255);
     }
+    else
+    {
+        Debug.LogWarning("ObjectiveHolder not found for index: " + index);
+    }
+}
+
 
     public void ReceiveFeedback(Feedback feedback)
     {
