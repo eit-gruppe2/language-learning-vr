@@ -37,54 +37,52 @@ public class responsiveUI : MonoBehaviour
         
     }
 
-    private void VisualizeObjectives(Objective objective, int index)
-{
-    // Instantiate an instance of a visual objective
-    GameObject instance = Instantiate(ObjectiveStruct);
-    instance.transform.SetParent(transform);
+    private void VisualizeObjectives(Objective objective, int index) {
+      // Instantiate an instance of a visual objective
+      GameObject instance = Instantiate(ObjectiveStruct);
+      instance.transform.SetParent(transform);
+      TextMeshProUGUI text = instance.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+      text.text = objective.TaskDescription;
+      instance.GetComponent<Image>().color = new Color32(179, 143, 47, 255);
 
-    // Set the rotation of the instance to match the parent's rotation
-    instance.transform.rotation = transform.rotation;
+      // Position the instantiated object
+      string holderName = "ObjectiveHolder (" + index + ")";
+      Transform objectiveHolder = transform.Find("ObjectiveInfo/Background/Positions/" + holderName);
+      if (objectiveHolder != null)
+      {
+          // Set the position of the instantiated object within the ObjectiveHolder
+          instance.transform.SetParent(objectiveHolder);
+          instance.transform.localPosition = Vector3.zero;
+      } else {
+        Debug.LogWarning("ObjectiveHolder index not found");
+      }
 
-    TextMeshProUGUI text = instance.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-    text.text = objective.TaskDescription;
-
-    // Move the visual objective further down
-    float POSITION_MULTIPLIER = 0.2f;
-    float STARTING_POSITION = 3.1f;
-    instance.transform.position = new Vector3(instance.transform.position.x, STARTING_POSITION - index * POSITION_MULTIPLIER, instance.transform.position.z);
-    Debug.Log("position: " + instance.transform.position);
-
-    // Find the corresponding ObjectiveHolder
-    string holderName = "ObjectiveHolder(" + index + ")";
-    Transform objectiveHolder = transform.Find("ObjectiveInfo/Background/Positions/" + holderName);
-
-    if (objectiveHolder != null)
-    {
-        // Set the position of the instantiated object within the ObjectiveHolder
-        instance.transform.SetParent(objectiveHolder);
-        instance.transform.localPosition = Vector3.zero;
-
-        // Visualize current objective
-        foreach (Transform child in transform)
-        {
-            if (child.name == "ObjectiveStruct(Clone)")
-            {
-                child.GetComponent<Image>().color = new Color32(179, 143, 47, 255);
-                Debug.Log("child found and color changed");
-            }
-        }
-
-        int lastChildIndex = transform.childCount - 1;
-        GameObject lastChildObject = transform.GetChild(lastChildIndex).gameObject;
-        lastChildObject.GetComponent<Image>().color = new Color32(255, 210, 90, 255);
+      UpdateObjectiveColors(index);
     }
-    else
-    {
-        Debug.LogWarning("ObjectiveHolder not found for index: " + index);
-    }
-}
 
+    private void UpdateObjectiveColors(int index)
+    {
+      foreach (Transform holder in transform.Find("ObjectiveInfo/Background/Positions"))
+          {
+              if (holder.childCount > 0)
+              {
+                  holder.GetChild(0).GetComponent<Image>().color = new Color32(179, 143, 47, 255);
+              }
+          }
+
+      for (int i = 6; i >= 0; i--)
+      {
+          string holderNameToCheck = "ObjectiveHolder (" + i + ")";
+          Transform holder = transform.Find("ObjectiveInfo/Background/Positions/" + holderNameToCheck);
+
+          if (holder != null && holder.childCount > 0)
+          {
+              // Change the color of the object found in the last six holders
+              holder.GetChild(0).GetComponent<Image>().color = new Color32(255, 210, 90, 255);
+              break;  // Exit the loop after changing the color of the first object found
+          }
+      }
+    }
 
     public void ReceiveFeedback(Feedback feedback)
     {
@@ -108,5 +106,16 @@ public class responsiveUI : MonoBehaviour
     
     private void FillFeedBackText(string feedback){
       feedbacktext.text = feedback;
+    }
+
+    private void LateUpdate()
+    {
+        // Make canvas face the player at all times
+        Vector3 targetDirection = Camera.main.transform.position - transform.position;
+        targetDirection = Quaternion.Euler(0, 180, 0) * targetDirection;
+        targetDirection.y = 0;
+        Quaternion targetRotation = Quaternion.LookRotation(targetDirection.normalized, Vector3.up);
+        transform.rotation = targetRotation;
+        transform.position = new Vector3(transform.position.x, Camera.main.transform.position.y, transform.position.z);
     }
 }   
