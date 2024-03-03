@@ -4,20 +4,23 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using System;
+using Unity.XR.CoreUtils;
+using Unity.VisualScripting;
+using UnityEditor.Animations;
 
 public class responsiveUI : MonoBehaviour
 {
-    public int stars;
-    public string feedback;
     public TextMeshProUGUI feedbacktext;
     public GameObject grammarStars;
     public GameObject pronounciationStars;
     public GameObject ExpressivenessStars;
 
-    public TextMeshProUGUI currentObjective;
+    public GameObject FeedBackform;
+
+    public GameObject ObjectiveStruct;
 
     public void InitObjectives(Objective objective) {
-      currentObjective.text = objective.TaskDescription;
+      VisualizeObjectives(objective, 0);
     } 
     public void ReceiveUpdatedObjectives(List<Objective> objectives)
     {
@@ -26,24 +29,50 @@ public class responsiveUI : MonoBehaviour
         int lastToShow = objectivesToShow.FindIndex((obj) => !obj.IsCompleted);
         if(lastToShow >= 0) {
           objectivesToShow.RemoveRange(lastToShow + 1, objectivesToShow.Count - lastToShow - 1);
-          currentObjective.text = objectivesToShow[lastToShow].TaskDescription;
+          VisualizeObjectives(objectivesToShow[lastToShow], lastToShow);
           Debug.Log("current objective: "+objectivesToShow[lastToShow].TaskDescription);
         } else {
-          currentObjective.text = "You completed all the objectives! Great work!";
+          FeedBackform.SetActive(true);
         }
         
     }
 
+    private void VisualizeObjectives(Objective objective, int index) {
+      // Instantiate an instance of a visual objective
+      GameObject instance = Instantiate(ObjectiveStruct);
+      instance.transform.SetParent(transform);
+      TextMeshProUGUI text = instance.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+      text.text = objective.TaskDescription;
+
+      // Move the visual objective further down
+      float POSITION_MULTIPLIER = 0.2f;
+      float STARTING_POSITION = 3.1f;
+      instance.transform.position = new Vector3(instance.transform.position.x,STARTING_POSITION - index * POSITION_MULTIPLIER, instance.transform.position.z);
+      Debug.Log("position: " + instance.transform.position);
+
+      // Visualize current objective
+      foreach(Transform child in transform) {
+        if(child.name == "ObjectiveStruct(Clone)") {
+          child.GetComponent<Image>().color = new Color32(179, 143, 47, 255);
+          Debug.Log("child found and color changed");
+        }
+      }
+
+      int lastChildIndex = transform.childCount - 1;
+      GameObject lastChildObject = transform.GetChild(lastChildIndex).gameObject;
+      lastChildObject.GetComponent<Image>().color = new Color32(255, 210, 90, 255);
+      
+    }
 
     public void ReceiveFeedback(Feedback feedback)
     {
-        fillStars(feedback.grammar, grammarStars);
-        fillStars(feedback.pronunciation, pronounciationStars);
-        fillStars(feedback.expressiveness, ExpressivenessStars);
-        fillFeedBackText(feedback.generalFeedback);   
+        FillStars(feedback.grammar, grammarStars);
+        FillStars(feedback.pronunciation, pronounciationStars);
+        FillStars(feedback.expressiveness, ExpressivenessStars);
+        FillFeedBackText(feedback.generalFeedback);   
     }
 
-    private void fillStars(int stars, GameObject starline){
+    private void FillStars(int stars, GameObject starline){
       int i = 0;
       foreach (Transform star in starline.transform) {
         if (i<stars) {
@@ -55,7 +84,7 @@ public class responsiveUI : MonoBehaviour
       }
     }
     
-    private void fillFeedBackText(string feedback){
+    private void FillFeedBackText(string feedback){
       feedbacktext.text = feedback;
     }
 }   
