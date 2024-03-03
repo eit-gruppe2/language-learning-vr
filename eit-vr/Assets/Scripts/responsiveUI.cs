@@ -53,6 +53,7 @@ public class responsiveUI : MonoBehaviour
           // Set the position of the instantiated object within the ObjectiveHolder
           instance.transform.SetParent(objectiveHolder);
           instance.transform.localPosition = Vector3.zero;
+          instance.transform.rotation = transform.rotation;
       } else {
         Debug.LogWarning("ObjectiveHolder index not found");
       }
