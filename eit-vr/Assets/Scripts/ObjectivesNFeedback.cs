@@ -83,7 +83,7 @@ textFeedback: Overall, the conversation was somewhat understandable despite some
             var response = completionResponse.Choices[0].Message.Content;
             Feedback feedback = new Feedback(response);
             uiScript.ReceiveFeedback(feedback);
-            Debug.Log(feedback);
+            Debug.Log("Feedback: " +feedback);
         }
     }
 
@@ -95,11 +95,5 @@ textFeedback: Overall, the conversation was somewhat understandable despite some
             o += objective.ToString() + "\n";
         }
         return o;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

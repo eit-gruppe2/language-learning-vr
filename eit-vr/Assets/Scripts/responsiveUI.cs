@@ -24,17 +24,19 @@ public class responsiveUI : MonoBehaviour
         // We only want to show the previous and current objective, no past objectives
         List<Objective> objectivesToShow = new List<Objective>(objectives);
         int lastToShow = objectivesToShow.FindIndex((obj) => !obj.IsCompleted);
-        objectivesToShow.RemoveRange(lastToShow + 1, objectivesToShow.Count - lastToShow - 1);
+        if(lastToShow >= 0) {
+          objectivesToShow.RemoveRange(lastToShow + 1, objectivesToShow.Count - lastToShow - 1);
+          currentObjective.text = objectivesToShow[lastToShow].TaskDescription;
+          Debug.Log("current objective: "+objectivesToShow[lastToShow].TaskDescription);
+        } else {
+          currentObjective.text = "You completed all the objectives! Great work!";
+        }
         
-        // TODO: show objectivesToShow to the user
-        currentObjective.text = objectivesToShow[lastToShow].TaskDescription;
-        Debug.Log("current objective: "+objectivesToShow[lastToShow].TaskDescription);
     }
 
 
     public void ReceiveFeedback(Feedback feedback)
     {
-        // TODO: show the feedback to the user
         fillStars(feedback.grammar, grammarStars);
         fillStars(feedback.pronunciation, pronounciationStars);
         fillStars(feedback.expressiveness, ExpressivenessStars);
