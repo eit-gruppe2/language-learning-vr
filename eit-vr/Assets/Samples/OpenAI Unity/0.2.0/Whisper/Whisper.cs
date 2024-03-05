@@ -2,12 +2,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 namespace Samples.Whisper
 {
     public class Whisper : MonoBehaviour
     {
         [SerializeField] private Button recordButton;
+        [SerializeField] private InputActionReference primaryButtonActionReference;
         [SerializeField] private ScrollRect scroll;
         [SerializeField] private Dropdown dropdown;
         [SerializeField] private string systemMessage;
@@ -48,6 +50,30 @@ namespace Samples.Whisper
                 Role = "system",
                 Content = systemMessage
             });
+        }
+
+        private void OnEnable()
+        {
+            // Register the input action event for the primary button
+            primaryButtonActionReference.action.started += OnPrimaryButtonPressed;
+        }
+
+        private void OnDisable()
+        {
+            // Unregister the input action event to avoid memory leaks
+            primaryButtonActionReference.action.started -= OnPrimaryButtonPressed;
+        }
+
+        private void OnPrimaryButtonPressed(InputAction.CallbackContext context)
+        {
+            if (isRecording)
+            {
+                EndRecording();
+            }
+            else
+            {
+                StartRecording();
+            }
         }
 
         private void ChangeMicrophone(int index)

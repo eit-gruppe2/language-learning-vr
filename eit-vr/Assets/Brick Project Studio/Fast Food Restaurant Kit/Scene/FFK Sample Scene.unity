@@ -40365,6 +40365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recordButton: {fileID: 295455234}
+  primaryButtonActionReference: {fileID: -2379673137762026563, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   scroll: {fileID: 1063946792}
   dropdown: {fileID: 1569083990}
   systemMessage: 'Act as a cashier taking order in a resturant and reply to the questions.
