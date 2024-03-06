@@ -7,6 +7,9 @@ using System;
 using Unity.XR.CoreUtils;
 using Unity.VisualScripting;
 using UnityEditor.Animations;
+// We would like to thank the creators of these icons
+// <a href="https://www.flaticon.com/free-icons/vr-gaming" title="vr gaming icons">Vr gaming icons created by vectorsmarket15 - Flaticon</a>
+// <a href="https://www.flaticon.com/free-icons/listen" title="listen icons">Listen icons created by Voysla - Flaticon</a>
 
 public class responsiveUI : MonoBehaviour
 {
@@ -18,6 +21,10 @@ public class responsiveUI : MonoBehaviour
     public GameObject FeedBackform;
 
     public GameObject ObjectiveStruct;
+
+    public GameObject EarIcon;
+    public GameObject PressAIcon;
+    private bool recording;
 
     public void InitObjectives(Objective objective) {
       VisualizeObjectives(objective, 0);
@@ -109,14 +116,48 @@ public class responsiveUI : MonoBehaviour
       feedbacktext.text = feedback;
     }
 
-    private void LateUpdate()
+    public void UpdateRecordIcons () {
+      recording = !recording;
+      
+    }
+
+    IEnumerator OscillateEarIcon()
     {
-        // Make canvas face the player at all times
-        Vector3 targetDirection = Camera.main.transform.position - transform.position;
-        targetDirection = Quaternion.Euler(0, 180, 0) * targetDirection;
-        targetDirection.y = 0;
-        Quaternion targetRotation = Quaternion.LookRotation(targetDirection.normalized, Vector3.up);
-        transform.rotation = targetRotation;
-        transform.position = new Vector3(transform.position.x, Camera.main.transform.position.y, transform.position.z);
+        float minScale = 0.0072f;
+        float maxScale = 0.0075f;
+
+        while (true)
+        {
+            // Mathf.PingPong returns a value between 0 and 1, so we scale and offset it to fit the desired range
+            float scale = Mathf.PingPong(Time.time, (maxScale - minScale) / 2.0f) + minScale;
+
+            EarIcon.transform.localScale = new Vector3(scale, scale, scale);
+            yield return null;
+        }
+    }
+
+
+    // private void LateUpdate()
+    // {
+    //     // Make canvas face the player at all times
+    //     Vector3 targetDirection = Camera.main.transform.position - transform.position;
+    //     targetDirection = Quaternion.Euler(0, 180, 0) * targetDirection;
+    //     targetDirection.y = 0;
+    //     Quaternion targetRotation = Quaternion.LookRotation(targetDirection.normalized, Vector3.up);
+    //     transform.rotation = targetRotation;
+    //     transform.position = new Vector3(transform.position.x, Camera.main.transform.position.y, transform.position.z);
+    // }
+
+    private void Update() {
+
+      if(recording || Input.GetKey(KeyCode.Space)) {
+        EarIcon.SetActive(true);
+        PressAIcon.SetActive(false);
+        StartCoroutine(OscillateEarIcon());
+      } else {
+        PressAIcon.SetActive(true);
+        EarIcon.SetActive(true);
+        StopAllCoroutines();
+      }
     }
 }   

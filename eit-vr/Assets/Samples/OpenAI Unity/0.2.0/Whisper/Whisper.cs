@@ -28,6 +28,7 @@ namespace Samples.Whisper
 
         [SerializeField] private TTSManager ttsManager;
         [SerializeField] private ObjectivesNFeedback objectivesNFeedback;
+        [SerializeField] private responsiveUI responsiveUI;
 
         private void Start()
         {
@@ -65,6 +66,7 @@ namespace Samples.Whisper
             }
 
             isRecording = true;
+            responsiveUI.UpdateRecordIcons();
             // change text of button
             recordButton.GetComponentInChildren<Text>().text = "Stop recording";
 
@@ -78,6 +80,7 @@ namespace Samples.Whisper
         private async void EndRecording()
         {            
             isRecording = false;
+            responsiveUI.UpdateRecordIcons();
             recordButton.GetComponentInChildren<Text>().text = "Record Audio";
 
             #if !UNITY_WEBGL
