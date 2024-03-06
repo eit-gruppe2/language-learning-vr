@@ -5838,6 +5838,8 @@ MonoBehaviour:
   blinkMaterial: {fileID: 2100000, guid: e4415fc80221fe844b50a98047bf745a, type: 2}
   blinkDuration: 1
   blinkInterval: 0.5
+  rightController: {fileID: 1858271731}
+  primaryButtonActionReference: {fileID: -2379673137762026563, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!1001 &302029296
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27455,7 +27457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1984668758913251958, guid: 65eb6b98091a5734ba9d9ca871cef69a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 58.19
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1984668758913251958, guid: 65eb6b98091a5734ba9d9ca871cef69a, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -40259,6 +40261,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1954185702199389827, guid: e0f2df96b7a2b1b4eb0445c0a3be5515, type: 3}
   m_PrefabInstance: {fileID: 1856696865}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1858271731 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2871854915827847850, guid: 65eb6b98091a5734ba9d9ca871cef69a, type: 3}
+  m_PrefabInstance: {fileID: 1324479038}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caff514de9b15ad48ab85dcff5508221, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1858739002 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -987083955894304727, guid: 71490e909f29f402688b1a86561c36e3, type: 3}

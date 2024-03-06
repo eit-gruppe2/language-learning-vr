@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class Usability : MonoBehaviour
 {
@@ -21,6 +24,11 @@ public class Usability : MonoBehaviour
     private Material originalMaterial; // Original material of the button
     private bool isBlinking = false;
 
+    [SerializeField]
+    private XRBaseController rightController;
+    [SerializeField] private InputActionReference primaryButtonActionReference;
+    private Coroutine vibrationCoroutine;
+
     void Start()
     {
         Debug.Log("Starting usability script");
@@ -40,6 +48,23 @@ public class Usability : MonoBehaviour
         originalMaterial = buttonRenderer.material;
 
         StartBlinking();
+        vibrationCoroutine = StartCoroutine(Countdown());
+
+    }
+
+    private void OnEnable()
+    {
+        // Register the input action event for the primary button
+        primaryButtonActionReference.action.started += OnPrimaryButtonPressed;
+    }
+
+    private void OnPrimaryButtonPressed(InputAction.CallbackContext context)
+    {
+        if (vibrationCoroutine != null)
+        {
+            StopCoroutine(vibrationCoroutine);
+            vibrationCoroutine = null;
+        }
     }
 
     public void StartBlinking()
@@ -71,5 +96,20 @@ public class Usability : MonoBehaviour
             buttonRenderer.material = originalMaterial;
             yield return new WaitForSeconds(blinkInterval);
         }
+    }
+
+    private IEnumerator Countdown()
+    {
+        yield return new WaitForSeconds(10);
+        while (true)
+        {
+            yield return new WaitForSeconds(10);
+            VibrateController();
+        }
+    }
+
+    private void VibrateController()
+    {
+        rightController.SendHapticImpulse(0.5f, 1.0f);
     }
 }
