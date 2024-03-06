@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
-using System;
-using Unity.XR.CoreUtils;
-using Unity.VisualScripting;
-using UnityEditor.Animations;
 
 public class responsiveUI : MonoBehaviour
 {
