@@ -152,7 +152,7 @@ public class responsiveUI : MonoBehaviour
 
     private void Update() {
 
-      if(recording || Input.GetKey(KeyCode.Space)) {
+      if(recording) {
         EarIcon.SetActive(true);
         PressAIcon.SetActive(false);
         StartCoroutine(OscillateEarIcon());
