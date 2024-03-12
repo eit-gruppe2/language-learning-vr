@@ -123,30 +123,31 @@ public class responsiveUI : MonoBehaviour
 
     IEnumerator OscillateEarIcon()
     {
-        float minScale = 0.0072f;
-        float maxScale = 0.0075f;
+        float minScale = 0.0060f;
+        float maxScale = 0.0080f;
+        float oscillationSpeed =0.005f;
 
         while (true)
         {
-            // Mathf.PingPong returns a value between 0 and 1, so we scale and offset it to fit the desired range
-            float scale = Mathf.PingPong(Time.time, (maxScale - minScale) / 2.0f) + minScale;
-
+            float scale = Mathf.PingPong(Time.time * oscillationSpeed, (maxScale - minScale) / 2.0f) + minScale;
+            
             EarIcon.transform.localScale = new Vector3(scale, scale, scale);
             yield return null;
         }
     }
 
 
-    // private void LateUpdate()
-    // {
-    //     // Make canvas face the player at all times
-    //     Vector3 targetDirection = Camera.main.transform.position - transform.position;
-    //     targetDirection = Quaternion.Euler(0, 180, 0) * targetDirection;
-    //     targetDirection.y = 0;
-    //     Quaternion targetRotation = Quaternion.LookRotation(targetDirection.normalized, Vector3.up);
-    //     transform.rotation = targetRotation;
-    //     transform.position = new Vector3(transform.position.x, Camera.main.transform.position.y, transform.position.z);
-    // }
+
+     private void LateUpdate()
+     {
+         // Make canvas face the player at all times
+         Vector3 targetDirection = Camera.main.transform.position - transform.position;
+         targetDirection = Quaternion.Euler(0, 180, 0) * targetDirection;
+         targetDirection.y = 0;
+         Quaternion targetRotation = Quaternion.LookRotation(targetDirection.normalized, Vector3.up);
+         transform.rotation = targetRotation;
+         transform.position = new Vector3(transform.position.x, Camera.main.transform.position.y, transform.position.z);
+     }
 
     private void Update() {
 
