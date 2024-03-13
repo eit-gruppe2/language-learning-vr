@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.InputSystem;
 
+
 namespace Samples.Whisper
 {
     public class Whisper : MonoBehaviour
@@ -52,6 +53,7 @@ namespace Samples.Whisper
                 Role = "system",
                 Content = systemMessage
             });
+            Console.Write(systemMessage);
         }
 
         private void OnEnable()
