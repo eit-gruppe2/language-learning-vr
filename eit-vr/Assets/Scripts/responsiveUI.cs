@@ -3,14 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
-using System;
-using Unity.XR.CoreUtils;
-using Unity.VisualScripting;
-using UnityEditor.Animations;
-// We would like to thank the creators of these icons
-// <a href="https://www.flaticon.com/free-icons/vr-gaming" title="vr gaming icons">Vr gaming icons created by vectorsmarket15 - Flaticon</a>
-// <a href="https://www.flaticon.com/free-icons/listen" title="listen icons">Listen icons created by Voysla - Flaticon</a>
-
 
 public class responsiveUI : MonoBehaviour
 {
