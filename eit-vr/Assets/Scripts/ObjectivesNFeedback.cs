@@ -9,9 +9,9 @@ public class ObjectivesNFeedback : MonoBehaviour
     [SerializeField] private responsiveUI uiScript;
     public List<Objective> objectives = new List<Objective>
     {
-        new Objective("Order a hamburger"),
-        new Objective("Order a milkshake"),
-        new Objective("Tip appropriately")
+        new Objective(LanguageSettings.orderABurger.ToString()),
+        new Objective(LanguageSettings.orderAMilkshake.ToString()),
+        new Objective(LanguageSettings.tipAppropriately.ToString())
     };
     private int currentObjective = 0;
     private OpenAIApi openai = new OpenAIApi("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");
@@ -29,8 +29,8 @@ public class ObjectivesNFeedback : MonoBehaviour
         chatMessages.Insert(0, new ChatMessage()
         {
             Role = "system",
-            Content = "Go through the chat log between the customer and the cashier at a fast food restaurant. If the current objective is met, respond with the word true only. If not, respond with the word false."
-            + "\nThe current objective is: " + objectives[currentObjective].TaskDescription
+            Content = LanguageSettings.systemMessage.ToString()
+            + "\n" + LanguageSettings.currentObjectiveIs.ToString() + objectives[currentObjective].TaskDescription
         });
         var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
         {
@@ -64,14 +64,7 @@ public class ObjectivesNFeedback : MonoBehaviour
         chatMessages.Insert(0, new ChatMessage()
         {
             Role = "system",
-            Content = @"Give feedback to the user acting as the customer in this conversation between a customer and a cashier in a fast food restaurant. Give a text feedback (textFeedback) with a rating from 1 to 5 on the following parameters grammar, pronunciation, expressiveness. You could assume the pronunciation is bad if there is a  lot of words that are transcribed that doesn't fit in the context. Expressiveness is how easy it is to understand and the ability of the customer to express themselves.
-
-Example:
-
-grammar: 2/5
-pronunciation: 3/5
-expressiveness: 2/5
-textFeedback: Overall, the conversation was somewhat understandable despite some grammatical errors. The pronunciation was decent, but there were a few areas where it could be improved for better clarity. In terms of expressiveness, the responses were simple with room for more engagement and energy in the interaction. Keep practicing to refine these aspects!"
+            Content = LanguageSettings.feedbackSystemMessage.ToString()
         });
         var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
         {
