@@ -1274,7 +1274,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Japanese
+  m_text: 'German
 
 '
   m_isRightToLeft: 0
@@ -1544,7 +1544,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 80a22b7506664b5439f82c60bc9a0b37, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0cc8b347dc0f79449bba5976445e6b39, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

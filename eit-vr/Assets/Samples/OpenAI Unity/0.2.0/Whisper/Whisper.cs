@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
 using UnityEngine.InputSystem;
-
+using UnityEngine.SceneManagement;
 
 namespace Samples.Whisper
 {
@@ -70,6 +70,11 @@ namespace Samples.Whisper
 
         private void OnPrimaryButtonPressed(InputAction.CallbackContext context)
         {
+            if (objectivesNFeedback.finished)
+            {
+                SceneManager.LoadScene("StartScene");
+            }
+
             if (isRecording)
             {
                 EndRecording();

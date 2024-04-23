@@ -15,6 +15,7 @@ public class ObjectivesNFeedback : MonoBehaviour
     };
     private int currentObjective = 0;
     private OpenAIApi openai = new OpenAIApi("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");
+    public bool finished = false;
 
     public void Start(){
        uiScript.InitObjectives(objectives[0]);
@@ -78,6 +79,7 @@ public class ObjectivesNFeedback : MonoBehaviour
             uiScript.ReceiveFeedback(feedback);
             Debug.Log("Feedback: " +feedback);
         }
+        finished = true;
     }
 
     private string LogObjectives()
