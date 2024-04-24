@@ -14,4 +14,4 @@ This only needs to be run once.
 This project is built using unity. It was developed using Unity 2022.3.f1 (LTS). 
 
 ### Functionality code
-Code related to AI functionality can be found under "eit-vr/Assets/Samples/OpenAI Unity/0.2.0/Whisper/Whisper.cs"
+Code related to AI functionality is written in "whisper.cs" which can be found under "https://github.com/eit-gruppe2/language-learning-vr/tree/main/eit-vr/Assets/Samples/OpenAI%20Unity/0.2.0/Whisper" 
